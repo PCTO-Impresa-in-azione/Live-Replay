@@ -1,4 +1,8 @@
 <<<<<<< HEAD
+# Live-Replay
+qeadfriujbgrjqndvio
+=======
+<<<<<<< HEAD
 che shchifo
 =======
 # Live-Replay
@@ -14,3 +18,4 @@ fai cagare
 >>>>>>> 7d7159e4ff9594028da90a2c50c550b3bc978b91
 
 dio esiste e è fra noi
+>>>>>>> 3a0e34c37ff7a87919891324c0e40398ba72cc6f
