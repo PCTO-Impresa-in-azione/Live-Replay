@@ -119,116 +119,22 @@ li.fb {
 }
 
 @media screen and (max-width: 600px) {
-    body {
-        background: #03588c;
-    }
-    
-    .navbar {
-        background: #555;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-    }
-    
-    .navbar label {
-        color: #04d99d;
-        font-size: 30px;
-    }
-    
-    .navbar label label {
-        color: #b7f238;
-    }
-    
-    .navbar button {
-        width: 200px;
-        height: 50px;
-        border: 2px solid #fff;
-        border-radius: 22px;
-        background: #033e8c;
-        color: #fff;
-        font-weight: 600;
-        font-size: 20px;
-        cursor: pointer;
-    }
-    
-    .navbar button:hover {
-        border: 2px solid #000;
-    }
-    
     .wrapper {
         flex-direction: column;
         display: flex;
     }
-    
-    .wrapper img {
-        width: 80%;
-        margin-top: 100px;
-        margin-left: 50px;
-    }
-    
-    .wrapper .hero {
-        flex-direction: column;
-    }
-    
-    .hero {
-        text-align: center;
-        margin-top: 50px;
-    }
-    
-    .hero h1 {
-        color: #04d99d;
-    }
-    
-    .hero h2 {
-        color: #fff;
-    }
-    
-    .hero label {
-        color: #b7f238;
-    }
-    
-    .descrizione {
-        height: 500px;
-    }
-    
-    .footer {
-        background: #555;
-        display: flex;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        flex-direction: row-reverse;
-    }
-    
+
     .footer ul {
-        padding: 20px; 
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
     }
-    
+
     .footer li {
-        list-style: none;
-        position: relative;
-        cursor: pointer;
+        display: inline-block;
     }
-    
-    .footer li img {
-        right: 0;
-        width: 35px;
-    }
-    
-    li.yt {
-        color: #f00;
-    }
-    
-    li.insta {
-        color: #dd2a7b;
-    }
-    
-    li.twitter {
-        color: #55acee;
-    }
-    
-    li.fb {
-        color: #3b5998;
+
+    li label {
+        display: none;
     }
 }
