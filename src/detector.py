@@ -17,7 +17,7 @@ import random
 
 def arg_parse():
     parser = argparse.ArgumentParser(description="Bello")
-    parser.add_argument("--i", dest="image", help="Path to image to detect", default="resources/coperta.jpeg", type=str)
+    parser.add_argument("--i", dest="image", help="Path to image to detect", default="resources/lontana.jpeg", type=str)
     parser.add_argument("--dst", dest="detections", help="Folder to store the detections", default="detections", type=str)
     parser.add_argument("--bs", dest = "bs", help = "Batch size", default = 1)
     parser.add_argument("--confidence", dest = "confidence", help = "Object Confidence to filter predictions", default = 0.5)
