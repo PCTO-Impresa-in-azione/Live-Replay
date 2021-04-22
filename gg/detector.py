@@ -18,130 +18,100 @@ import random
 
 CUDA = torch.cuda.is_available()
 
+net = cv2.dnn.readNet("cfg/yolov3.weights", "cfg/yoloNetwork.cfg")
 num_classes = 80
-classes = load_classes("data/coco.names")
+classes = []
+with open("data/coco.names", "r") as f:
+    classes = [line.strip() for line in f.readlines()]
 
-model = Darknet(args.cfgfile)
-model.load_weights(args.weightsfile)
+layer_names = net.getLayerNames()
+output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
+video_capture = cv2.VideoCapture(0)
+while True:
+    vod = cv.VideoCapture('media/corn.mp4')
+
+ret, frame = vod.read()
+
+scale = 0.5
+
+gpu_frame = cv.cuda_GpuMat()
+
+while ret:
+
+    gpu_frame.upload(frame)
+
+    resized = cv.cuda.resize(gpu_frame, (int(1280 * scale), int(720 * scale)))
+
+    luv = cv.cuda.cvtColor(resized, cv.COLOR_BGR2LUV)
+    hsv = cv.cuda.cvtColor(resized, cv.COLOR_BGR2HSV)
+    gray = cv.cuda.cvtColor(resized, cv.COLOR_BGR2GRAY)
+    
+    # download new image(s) from GPU to CPU (cv2.cuda_GpuMat -> numpy.ndarray)
+    resized = resized.download()
+    luv = luv.download()
+    hsv = hsv.download()
+    gray = gray.download()
+
+    ret, frame = vod.read()
+
+    # Showing informations on the screen
+    class_ids = []
+    confidences = []
+    boxes = []
+    for out in outs:
+        for detection in out:
+            scores = detection[5:]
+            class_id = np.argmax(scores)
+            confidence = scores[class_id]
+            if confidence > 0.5:
+                # Object detected
+                center_x = int(detection[0] * width)
+                center_y = int(detection[1] * height)
+                w = int(detection[2] * width)
+                h = int(detection[3] * height)
+
+                # Rectangle coordinates
+                x = int(center_x - w / 2)
+                y = int(center_y - h / 2)
+
+                boxes.append([x, y, w, h])
+                confidences.append(float(confidence))
+                class_ids.append(class_id)
+    
+    #We use NMS function in opencv to perform Non-maximum Suppression
+    #we give it score threshold and nms threshold as arguments.
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+    font = cv2.FONT_HERSHEY_PLAIN
+    colors = np.random.uniform(0, 255, size=(len(classes), 3))
+    for i in range(len(boxes)):
+        if i in indexes:
+            x, y, w, h = boxes[i]
+            label = str(classes[class_ids[i]])
+            color = colors[class_ids[i]]
+            cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+            cv2.putText(img, label, (x, y + 30), font, 2, color, 3)
+
+    cv2.imshow("Image",cv2.resize(img, (800,600)))
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 
-if CUDA:
-    model.cuda()
 
-model.eval()
 
-read_dir = time.time()
 
-try:
-    imlist = [osp.join(osp.realpath('.'), images, img) for img in os.listdir(images)]
-except NotADirectoryError:
-    imlist = []
-    imlist.append(osp.join(osp.realpath('.'), images))
-except FileNotFoundError:
-    print("No file or directory found with the name {}".format(images))
-    exit()
 
-if not os.path.exists(args.detections):
-    os.makedirs(args.detections)
 
-load_batch = time.time()
-loaded_ims = [cv2.imread(x) for x in imlist]
 
-im_batches = list(map(prep_image, loaded_ims, [inp_dim for x in range(len(imlist))])) #salviamo le immagini originali per l`output
-im_dim_list = [(x.shape[1], x.shape[0]) for x in loaded_ims]
-im_dim_list = torch.FloatTensor(im_dim_list).repeat(1, 2)
 
-if CUDA:
-    im_dim_list = im_dim_list.cuda()
 
-leftover = 0
-if(len(im_dim_list) % batch_size):
-    leftover = 1
 
-if (batch_size != 1):
-    num_batches = len(imlist) // batch_size + leftover
-    im_batches = [torch.cat((im_batches[i * batch_size : min((i + 1) * batch_size, len(im_batches))])) for i in range(num_batches)]
 
-write = 0
-start_det_loop = time.time()
-for i, batch in enumerate(im_batches):
-    start = time.time()
-    if CUDA:
-        batch = batch.cuda()
 
-    prediction = model(Variable(batch, volatile = True), CUDA)
-    prediction = write_results(prediction, confidence, num_classes, nms_conf = nms_tresh)
 
-    end = time.time()
 
-    if (type(prediction) == int):
-        for im_num, image in enumerate(imlist[i * batch_size: min((i + 1) * batch_size, len(imlist))]):
-            im_id = i * batch_size + im_num
-            print("{0:20s} predicted in {1:6.3f} seconds".format(image.split("/")[-1], (end - start)/batch_size))
-            print("{0:20s} {1:s}".format("Objects Detected:", ""))
-            print("----------------------------------------------------------")
-        continue
 
-    prediction[:,0] += i * batch_size
 
-    if not write:
-        output = prediction
-        write = 1
-    else:
-        output = torch.cat((output, prediction))
-
-    for im_num, image in enumerate(imlist[i * batch_size: min((i + 1) * batch_size, len(imlist))]):
-        im_id = i * batch_size + im_num
-        objs = [classes[int(x[-1])] for x in output if int(x[0]) == im_id]
-        print("{0:20s} predicted in {1:6.3f} seconds".format(image.split("/")[-1], (end - start)/batch_size))
-        print("{0:20s} {1:s}".format("Objects Detected:", " ".join(objs)))
-        print("----------------------------------------------------------")
-
-    if CUDA:
-        torch.cuda.synchronize()
-
-try:
-    output
-except NameError:
-    print ("No detections were made")
-    exit()
-
-im_dim_list = torch.index_select(im_dim_list, 0, output[:,0].long())
-
-scaling_factor = torch.min(inp_dim / im_dim_list, 1)[0].view(-1, 1)
-
-output[:, [1,3]] -= (inp_dim - scaling_factor * im_dim_list[:, 0].view(-1,1)) / 2
-output[:, [2,4]] -= (inp_dim - scaling_factor * im_dim_list[:, 1].view(-1,1)) / 2
-output[:,1:5] /= scaling_factor
-
-for i in range(output.shape[0]):
-    output[i, [1,3]] = torch.clamp(output[i, [1,3]], 0.0, im_dim_list[i,0])
-    output[i, [2,4]] = torch.clamp(output[i, [2,4]], 0.0, im_dim_list[i,1])
-
-output_recast = time.time()
-class_load = time.time()
-colors = pkl.load(open("cfg/pallete", "rb"))
-draw = time.time()
-
-def write(x, results):
-    c1 = tuple(x[1:3].int())
-    c2 = tuple(x[3:5].int())
-    img = results[int(x[0])]
-    cls = int(x[-1])
-    color = random.choice(colors)
-    label = "{0}".format(classes[cls])
-    cv2.rectangle(img, c1, c2, color, 1)
-    t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 1,1)[0]
-    c2 = c1[0] + t_size[0] + 3, c1[1] + t_size[1] + 4
-    cv2.rectangle(img, c1, c2, color, -1)
-    cv2.putText(img, label, (c1[0], c1[1] + t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 1, [225, 255, 255], 1)
-    return img
-
-list(map(lambda x: write(x, loaded_ims), output))
-
-det_names = pd.Series(imlist).apply(lambda x: "{}/det_{}".format(args.detections, x.split("/")[-1]))
-list(map(cv2.imwrite, det_names, loaded_ims))
-end = time.time()
 
 print("SUMMARY")
 print("----------------------------------------------------------")
