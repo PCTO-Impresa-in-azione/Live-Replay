@@ -1,5 +1,4 @@
 from __future__ import division
-from utils import *
 
 import time
 import torch 
@@ -15,7 +14,6 @@ import pickle as pkl
 import pandas as pd
 import random
 
-
 CUDA = torch.cuda.is_available()
 
 net = cv2.dnn.readNet("cfg/yolov3.weights", "cfg/yoloNetwork.cfg")
@@ -27,9 +25,18 @@ with open("data/coco.names", "r") as f:
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
-video_capture = cv2.VideoCapture(0)
 while True:
-    vod = cv2.VideoCapture(video_capture)
+    vod = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+    re,img = vod.read()
+    try:
+        img = cv2.resize(img, None, fx=0.4, fy=0.4)
+
+    except Exception as e:
+        print(str(e))
+
+    height, width, channels = img.shape
+    blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416),
+     swapRB=True, crop=False)
 
 ret, frame = vod.read()
 
