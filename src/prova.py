@@ -15,6 +15,8 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 print("YOLO LOADED")
 
 
+
+
 video_capture = cv2.VideoCapture(0)
 while True:
     # Capture frame-by-frame
