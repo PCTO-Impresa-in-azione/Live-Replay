@@ -29,23 +29,23 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 video_capture = cv2.VideoCapture(0)
 while True:
-    vod = cv.VideoCapture('media/corn.mp4')
+    vod = cv2.VideoCapture(video_capture)
 
 ret, frame = vod.read()
 
 scale = 0.5
 
-gpu_frame = cv.cuda_GpuMat()
+gpu_frame = cv2.cuda_GpuMat()
 
 while ret:
 
     gpu_frame.upload(frame)
 
-    resized = cv.cuda.resize(gpu_frame, (int(1280 * scale), int(720 * scale)))
+    resized = cv2.cuda.resize(gpu_frame, (int(1280 * scale), int(720 * scale)))
 
-    luv = cv.cuda.cvtColor(resized, cv.COLOR_BGR2LUV)
-    hsv = cv.cuda.cvtColor(resized, cv.COLOR_BGR2HSV)
-    gray = cv.cuda.cvtColor(resized, cv.COLOR_BGR2GRAY)
+    luv = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2LUV)
+    hsv = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2HSV)
+    gray = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2GRAY)
     
     # download new image(s) from GPU to CPU (cv2.cuda_GpuMat -> numpy.ndarray)
     resized = resized.download()
