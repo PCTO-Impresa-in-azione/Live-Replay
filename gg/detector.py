@@ -40,38 +40,13 @@ while not video.stopped:
     cv2.cvtColor(video.read(), cv2.COLOR_BGR2RGB, hsv, 0)
     cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB, hsv, 0)
     img = hsv.get()
-    cv2.cvtColor(frame, cv2.COLOR_RGB2HSV, hsv, 0)
-    try:
-        img = cv2.resize(img, None, fx=0.4, fy=0.4)
 
-    except Exception as e:
-        print(str(e))
-
-    height, width, channels = img.shape
+  # USing blob function of opencv to preprocess image
     blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416),
      swapRB=True, crop=False)
-
-scale = 0.5
-
-gpu_frame = cv2.cuda_GpuMat()
-
-while ret:
-
-    gpu_frame.upload(frame)
-
-    resized = cv2.cuda.resize(gpu_frame, (int(1280 * scale), int(720 * scale)))
-
-    luv = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2LUV)
-    hsv = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2HSV)
-    gray = cv2.cuda.cvtColor(resized, cv.COLOR_BGR2GRAY)
-    
-    # download new image(s) from GPU to CPU (cv2.cuda_GpuMat -> numpy.ndarray)
-    resized = resized.download()
-    luv = luv.download()
-    hsv = hsv.download()
-    gray = gray.download()
-
-    ret, frame = vod.read()
+    #Detecting objects
+    net.setInput(blob)
+    outs = net.forward(output_layers)
 
     # Showing informations on the screen
     class_ids = []
@@ -113,10 +88,8 @@ while ret:
     cv2.imshow("Image",cv2.resize(img, (800,600)))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-
-
-
+vcap.release()
+cv2.destroyAllWindows()
 
 
 
@@ -132,16 +105,6 @@ while ret:
 
 
 print("SUMMARY")
-print("----------------------------------------------------------")
-print("{:25s}: {}".format("Task", "Time Taken (in seconds)"))
-print()
-print("{:25s}: {:2.3f}".format("Reading addresses", load_batch - read_dir))
-print("{:25s}: {:2.3f}".format("Loading batch", start_det_loop - load_batch))
-print("{:25s}: {:2.3f}".format("Detection (" + str(len(imlist)) +  " images)", output_recast - start_det_loop))
-print("{:25s}: {:2.3f}".format("Output Processing", class_load - output_recast))
-print("{:25s}: {:2.3f}".format("Drawing Boxes", end - draw))
-print("{:25s}: {:2.3f}".format("Average time_per_img", (end - load_batch)/len(imlist)))
-print("----------------------------------------------------------")
 
 
 torch.cuda.empty_cache()
