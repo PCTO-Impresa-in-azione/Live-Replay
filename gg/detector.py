@@ -13,6 +13,7 @@ from darknet import Darknet
 import pickle as pkl
 import pandas as pd
 import random
+from UMatFileVideoStream import UMatFileVideoStream
 
 CUDA = torch.cuda.is_available()
 
@@ -25,9 +26,14 @@ with open("data/coco.names", "r") as f:
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
-while True:
-    vod = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    re,img = vod.read()
+video = UMatFileVideoStream('Gol.mp4', 30).start()
+rgb = cv2.UMat(self.height, self.width, cv2.CV_8UC3)
+
+while not video.stopped:
+    cv2.cvtColor(video.read(), cv2.COLOR_BGR2RGB, hsv, 0)
+    cv2.cvtColor(hsv, cv2.COLOR_HSV2RGB, hsv, 0)
+    img = hsv.get()
+    cv2.cvtColor(frame, cv2.COLOR_RGB2HSV, hsv, 0)
     try:
         img = cv2.resize(img, None, fx=0.4, fy=0.4)
 
@@ -37,8 +43,6 @@ while True:
     height, width, channels = img.shape
     blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416),
      swapRB=True, crop=False)
-
-ret, frame = vod.read()
 
 scale = 0.5
 
