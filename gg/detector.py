@@ -34,7 +34,7 @@ height = vcap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
 
 
 
-video = UMatFileVideoStream('Gol.mp4', 30).start()
+video = UMatFileVideoStream('Gol.mp4', 30).start() #creato l'oggetto video di classe UmatFileVideoStream (Umat serve a processarlo tramite la gpu)
 rgb=cv2.UMat(height, width)
 
 while not video.stopped:
@@ -86,7 +86,7 @@ while not video.stopped:
             cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
             cv2.putText(img, label, (x, y + 30), font, 2, color, 3)
 
-    cv2.imshow("Image",cv2.resize(img, (800,600)))
+    cv2.imshow("Image",cv2.resize(img, (800,600))) #mostra il frame attuale del video
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 vcap.release()
