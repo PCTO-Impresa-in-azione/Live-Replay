@@ -27,7 +27,7 @@ layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 video = UMatFileVideoStream('Gol.mp4', 30).start()
-rgb = cv2.UMat(self.height, self.width, cv2.CV_8UC3)
+rgb = cv2.UMat(video.height, video.width, cv2.CV_8UC3)
 
 while not video.stopped:
     cv2.cvtColor(video.read(), cv2.COLOR_BGR2RGB, hsv, 0)
@@ -106,22 +106,6 @@ while ret:
     cv2.imshow("Image",cv2.resize(img, (800,600)))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 print("SUMMARY")
