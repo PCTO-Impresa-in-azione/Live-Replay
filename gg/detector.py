@@ -26,8 +26,15 @@ with open("data/coco.names", "r") as f:
 layer_names = net.getLayerNames()
 output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
+vcap = cv2.VideoCapture('Gol.mp4')
+
+width  = vcap.get(cv2.CAP_PROP_FRAME_WIDTH)   # float `width`
+height = vcap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float `height`
+
+
+
 video = UMatFileVideoStream('Gol.mp4', 30).start()
-rgb = cv2.UMat(video.height, video.width, cv2.CV_8UC3)
+rgb=cv2.UMat(height, width)
 
 while not video.stopped:
     cv2.cvtColor(video.read(), cv2.COLOR_BGR2RGB, hsv, 0)
@@ -106,6 +113,22 @@ while ret:
     cv2.imshow("Image",cv2.resize(img, (800,600)))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 print("SUMMARY")
