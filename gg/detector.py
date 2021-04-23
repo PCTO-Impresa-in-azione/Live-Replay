@@ -17,6 +17,7 @@ from UMatFileVideoStream import UMatFileVideoStream
 
 CUDA = torch.cuda.is_available()
 
+
 net = cv2.dnn.readNet("cfg/yolov3.weights", "cfg/yoloNetwork.cfg")
 num_classes = 80
 classes = []
