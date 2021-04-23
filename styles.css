@@ -7,40 +7,35 @@
 }
 
 body {
-    background: #03588c;
+    background: #c7cecf;
 }
 
 .navbar {
-    background: #555;
+    background: #000001;
     display: flex;
     justify-content: space-between;
+    height: 57px;
     align-items: center;
-    padding: 10px;
+    
 }
 
-.navbar label {
-    color: #04d99d;
-    font-size: 30px;
+.navbar img {
+    margin-left: 20px;
+    justify-self: flex-start;
+    float:left;
+    height: 38px;
+    width: 159px;
 }
 
-.navbar label label {
-    color: #b7f238;
-}
-
-.navbar button {
-    width: 200px;
-    height: 50px;
-    border: 2px solid #fff;
-    border-radius: 22px;
-    background: #033e8c;
-    color: #fff;
-    font-weight: 600;
+.navbar input[type ="submit"],.navbar input[type ="submit"],.navbar input[type ="submit"] {
+    border: none;
+    float:right;
+    background: #000001 ;
+    color: #d8d8d8;
+    width: 158px;
+    height: 57px;
     font-size: 20px;
-    cursor: pointer;
-}
-
-.navbar button:hover {
-    border: 2px solid #000;
+    margin-right: 20px;
 }
 
 .wrapper {
@@ -48,43 +43,50 @@ body {
 }
 
 .wrapper img {
-    width: 50%;
-    margin-top: 100px;
-    margin-left: 50px;
-}
-
-.wrapper .hero {
-    flex-direction: column;
+    height: 421px;
+    width: 749px;
+    margin-top: 519px;
+    margin-left: 1115px;
 }
 
 .hero {
+    background-color: #941515;
     text-align: center;
-    margin-top: 50px;
+    padding: 97px;
 }
 
 .hero h1 {
-    color: #04d99d;
+    color: #E1E1E1;
 }
 
-.hero h2 {
-    color: #fff;
+.prodotti {
+    margin-top: 132px;
+    text-align: center;
 }
 
-.hero label {
-    color: #b7f238;
+.prodotti h4{
+    font-size: 64px; 
+    color: #941515;  
 }
 
-.descrizione {
-    height: 500px;
+.prodotti .svimg{
+    /* float: left; */
+    height: 98px;
+    width: 415px;
+}
+
+.prodotti .desc1img{
+    height: 421px;
+    width: 749px;
 }
 
 .footer {
-    background: #555;
+    background: #000001;
     display: flex;
-    position: absolute;
     bottom: 0;
     width: 100%;
     flex-direction: row-reverse;
+    position: relative;
 }
 
 .footer ul {
@@ -103,25 +105,35 @@ body {
 }
 
 li.yt {
-    color: #f00;
+    color: #ffffff;
 }
 
 li.insta {
-    color: #dd2a7b;
+    color: #ffffff;
 }
 
 li.twitter {
-    color: #55acee;
+    color: #ffffff;
 }
 
 li.fb {
-    color: #3b5998;
+    color: #ffffff;
 }
+
+li.lk {
+    color: #ffffff;
+}
+
+
 
 @media screen and (max-width: 600px) {
     .wrapper {
         flex-direction: column;
         display: flex;
+    }
+
+    li label {
+        display: none;
     }
 
     .footer ul {
@@ -134,7 +146,5 @@ li.fb {
         display: inline-block;
     }
 
-    li label {
-        display: none;
-    }
+    
 }
