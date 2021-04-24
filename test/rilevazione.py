@@ -20,7 +20,7 @@ video_capture = cv2.VideoCapture("resources\gg.mp4")
 while True:
     # Capture frame-by-frame
     re,img = video_capture.read()
-    img = cv2.resize(img, None, fx=1, fy=2)
+    img = cv2.resize(img, None, fx=0.4, fy=0.4)
     height, width, channels = img.shape
 
     # USing blob function of opencv to preprocess image
