@@ -16,7 +16,7 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 print("YOLO LOADED")
 
 #rilevazione
-video_capture = cv2.VideoCapture("resources\gg.mp4")
+video_capture = cv2.VideoCapture(0)
 while True:
     # Capture frame-by-frame
     re,img = video_capture.read()
