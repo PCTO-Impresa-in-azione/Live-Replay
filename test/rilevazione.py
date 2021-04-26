@@ -18,7 +18,7 @@ print("YOLO LOADED")
 video_capture = cv2.VideoCapture("resources/prova2.mp4")
 width= int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
 height= int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 20, (width,height))
+writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 20, (width,height))
 
 while True:
     # Capture frame-by-frame
