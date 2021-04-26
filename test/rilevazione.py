@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from PIL import ImageFont, ImageDraw, Image  
 
 # Load Yolo
 print("LOADING YOLO")
@@ -15,10 +16,14 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 print("YOLO LOADED")
 
 #rilevazione
+#video_capture = cv2.VideoCapture("resources/prova.avi")
 video_capture = cv2.VideoCapture("resources/prova2.mp4")
 width= int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
 height= int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+#writer= cv2.VideoWriter('risultati/risultato.avi', cv2.VideoWriter_fourcc(*'DIVX'), 20, (width,height))
 writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 20, (width,height))
+
+colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
 while True:
     # Capture frame-by-frame
@@ -63,8 +68,7 @@ while True:
     #We use NMS function in opencv to perform Non-maximum Suppression
     #we give it score threshold and nms threshold as arguments.
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-    font = cv2.FONT_HERSHEY_PLAIN
-    colors = np.random.uniform(0, 255, size=(len(classes), 3))
+    font = cv2.FONT_HERSHEY_TRIPLEX
     for i in range(len(boxes)):
         if i in indexes:
             x, y, w, h = boxes[i]
