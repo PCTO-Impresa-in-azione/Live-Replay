@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
+/*  */
+
 * {
     margin: 0px;
     padding: 0px;
@@ -16,21 +18,22 @@ body {
     justify-content: space-between;
     height: 57px;
     align-items: center;
-    
 }
 
 .navbar img {
     margin-left: 20px;
     justify-self: flex-start;
-    float:left;
+    float: left;
     height: 38px;
     width: 159px;
 }
 
-.navbar input[type ="submit"],.navbar input[type ="submit"],.navbar input[type ="submit"] {
+.navbar input[type="submit"],
+.navbar input[type="submit"],
+.navbar input[type="submit"] {
     border: none;
-    float:right;
-    background: #000001 ;
+    float: right;
+    background: #000001;
     color: #d8d8d8;
     width: 158px;
     height: 57px;
@@ -59,26 +62,42 @@ body {
     color: #E1E1E1;
 }
 
-.prodotti {
-    margin-top: 132px;
+.titolo {
+    height: 20%;
+    color: #941515;
+    font-size: 30px;
     text-align: center;
+    padding: 70px;
 }
 
-.prodotti h4{
-    font-size: 64px; 
-    color: #941515;  
+
+/* .prodotti {
+    
 }
 
-.prodotti .svimg{
-    /* float: left; */
+.prodotti .sportview {
+    
+    vertical-align: middle;
+} */
+
+
+/*
+.prodotti h4 {
+    font-size: 64px;
+    color: #941515;
+}
+
+.prodotti .svimg {
     height: 98px;
     width: 415px;
 }
 
-.prodotti .desc1img{
+.prodotti .desc1img {
     height: 421px;
     width: 749px;
 }
+
+*/
 
 .footer {
     background: #000001;
@@ -90,7 +109,7 @@ body {
 }
 
 .footer ul {
-    padding: 20px; 
+    padding: 20px;
 }
 
 .footer li {
@@ -104,9 +123,15 @@ body {
     width: 35px;
 }
 
+
+/* youtube */
+
 li.yt {
     color: #ffffff;
 }
+
+
+/* instagram */
 
 li.insta {
     color: #ffffff;
@@ -116,35 +141,80 @@ li.twitter {
     color: #ffffff;
 }
 
+
+/* facebook */
+
 li.fb {
     color: #ffffff;
 }
 
+
+/* linkdin */
+
 li.lk {
     color: #ffffff;
 }
-
-
 
 @media screen and (max-width: 600px) {
     .wrapper {
         flex-direction: column;
         display: flex;
     }
-
     li label {
         display: none;
     }
-
     .footer ul {
         width: 100%;
         display: flex;
         justify-content: space-around;
     }
-
     .footer li {
         display: inline-block;
     }
+}
 
-    
+
+/* prodotti */
+
+.prodotti .description {
+    height: 50%;
+}
+
+.prodotti .description .logo {
+    height: 30%;
+    text-align: center;
+}
+
+.contattaci div {
+    text-align: center;
+}
+
+#informazioniAboutUs div {
+    text-align: center;
+}
+
+.boxAquista {
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    /* border-radius: 20px;
+    border: 3px solid #000; */
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.boxAquista div {
+    height: 80%;
+    width: 60%;
+    border-radius: 20px;
+    background-color: #941515;
+    color: white;
+}
+
+.boxAquista div div {
+    height: 33.3%;
+    width: 100%;
+    text-align: center;
 }
