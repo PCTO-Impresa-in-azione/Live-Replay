@@ -15,12 +15,19 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 print("YOLO LOADED")
 
 #rilevazione
-video_capture = cv2.VideoCapture("resources/prova.avi")
+video_capture = cv2.VideoCapture("resources/prova2.mp4")
+width= int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+height= int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'DIVX'), 20, (width,height))
+
 while True:
     # Capture frame-by-frame
     re,img = video_capture.read()
-    img = cv2.resize(img, None, fx=0.4, fy=0.4)
-    height, width, channels = img.shape
+    try:
+        img = cv2.resize(img, None, fx=0.4, fy=0.4)
+        height, width, channels = img.shape
+    except:
+        break
 
     # USing blob function of opencv to preprocess image
     blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416),
@@ -66,8 +73,12 @@ while True:
             cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
             cv2.putText(img, label, (x, y + 30), font, 2, color, 3)
 
+    writer.write(img)
+
     cv2.imshow("Image",cv2.resize(img, (400,400)))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
 video_capture.release()
+writer.release()
 cv2.destroyAllWindows()
