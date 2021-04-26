@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from UMatFileVideoStream import UMatFileVideoStream
 
 # Load Yolo
 print("LOADING YOLO")
