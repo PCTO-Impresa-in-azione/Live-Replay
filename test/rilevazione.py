@@ -24,7 +24,7 @@ while True:
     # Capture frame-by-frame
     re,img = video_capture.read()
     try:
-        img = cv2.resize(img, None, fx=0.4, fy=0.4)
+        img = cv2.resize(img, None, fx=1, fy=1)
         height, width, channels = img.shape
     except:
         break
@@ -75,7 +75,7 @@ while True:
 
     writer.write(img)
 
-    cv2.imshow("Image",cv2.resize(img, (400,400)))
+    cv2.imshow("Image",cv2.resize(img, (width,height)))
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
