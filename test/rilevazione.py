@@ -5,6 +5,10 @@ from PIL import ImageFont, ImageDraw, Image
 # Load Yolo
 print("LOADING YOLO")
 net = cv2.dnn.readNet("cfg/yolov3.weights", "cfg/yoloNetwork.cfg")
+
+net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
+net.setPreferableTarget(cv2.dnn.DNN_TARGET_CUDA)
+
 #save all the names in file o the list classes
 classes = []
 with open("data/coco.names", "r") as f:
