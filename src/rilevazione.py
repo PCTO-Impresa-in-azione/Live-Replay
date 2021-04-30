@@ -3,9 +3,9 @@ import numpy as np
 import os, shutil
 from PIL import ImageFont, ImageDraw, Image  
 from imutils.video import FPS
-#from dearpygui.core import *
-#from dearpygui.simple import *
-#from dearpygui.demo import *
+from dearpygui.core import *
+from dearpygui.simple import *
+from dearpygui.demo import *
 from typing import cast
 from pyguiStyle import load_def_style
 
@@ -230,20 +230,20 @@ fps.stop()
 video_capture.release()
 writer.release()
 
-#enable_docking(shift_only = False)
-#set_main_window_size(1920, 1080)
-#set_main_window_title("SportView")
+enable_docking(shift_only = False)
+set_main_window_size(1920, 1080)
+set_main_window_title("SportView")
 
-#add_additional_font("./resources/fonts/Poppins/Poppins-Medium.ttf", size = 15.0)
+add_additional_font("./resources/fonts/Poppins/Poppins-Medium.ttf", size = 15.0)
 
-#load_def_style()
+load_def_style()
 
-#with window("Docking canvas", width = 1920, height = 1080, no_move = True, no_resize = True, no_background = True, no_title_bar=True, x_pos = 0, y_pos = 0, no_bring_to_front_on_focus = True):
-    #set_primary_window("Docking canvas", True)
+with window("Docking canvas", width = 1920, height = 1080, no_move = True, no_resize = True, no_background = True, no_title_bar=True, x_pos = 0, y_pos = 0, no_bring_to_front_on_focus = True):
+    set_primary_window("Docking canvas", True)
 
-#with window("File"):
-    #add_button("Select a file", callback = BtnFileSelectClick)
-    #add_button("Download", callback = BtnFileSelectClick)
+with window("File"):
+    add_button("Select a file", callback = BtnFileSelectClick)
+    add_button("Download", callback = BtnFileSelectClick)
 
-#start_dearpygui()
-#stop_dearpygui()
+start_dearpygui()
+stop_dearpygui()
