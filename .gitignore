@@ -1,3 +1,5 @@
 .vscode/*
 .src/__pycache__/*
 .detections/*
+.risultati/*
+*.weights
