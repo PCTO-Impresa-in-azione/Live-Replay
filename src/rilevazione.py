@@ -3,9 +3,9 @@ import numpy as np
 import os, shutil
 from PIL import ImageFont, ImageDraw, Image  
 from imutils.video import FPS
-from dearpygui.core import *
-from dearpygui.simple import *
-from dearpygui.demo import *
+#from dearpygui.core import *
+#from dearpygui.simple import *
+#from dearpygui.demo import *
 from typing import cast
 from pyguiStyle import load_def_style
 
@@ -164,87 +164,86 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 print("YOLO LOADED")
 
 #rilevazione
-#video_capture = cv2.VideoCapture("resources/prova.avi")
-#video_capture = cv2.VideoCapture("C:/Users/claud/Desktop/Film Role-0 ID-6 T-2 m00s00-000-m00s00-185.mp4")
-#width= int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
-#height= int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
-#writer= cv2.VideoWriter('risultati/risultato.avi', cv2.VideoWriter_fourcc(*'DIVX'), 20, (width,height))
-#writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 20, (width,height))
+video_capture = cv2.VideoCapture("resources/prova.avi")
+video_capture = cv2.VideoCapture("C:/Users/claud/Desktop/Film Role-0 ID-6 T-2 m00s00-000-m00s00-185.mp4")
+width= int(video_capture.get(cv2.CAP_PROP_FRAME_WIDTH))
+height= int(video_capture.get(cv2.CAP_PROP_FRAME_HEIGHT))
+writer= cv2.VideoWriter('risultati/risultato.avi', cv2.VideoWriter_fourcc(*'DIVX'), 20, (width,height))
+writer= cv2.VideoWriter('risultati/risultato.mp4', cv2.VideoWriter_fourcc(*'mp4v'), 20, (width,height))
 
-#colors = np.random.uniform(0, 255, size=(len(classes), 3))
-#fps = FPS().start()
-#while True:
-    # Capture frame-by-frame
-    #re,img = video_capture.read()
-    #if(not re):
-       # break
-    #height, width, channels = img.shape
+colors = np.random.uniform(0, 255, size=(len(classes), 3))
+fps = FPS().start()
+while True:
+    #Capture frame-by-frame
+    re,img = video_capture.read()
+    if(not re):
+       break
+    height, width, channels = img.shape
 
-    # USing blob function of opencv to preprocess image
-    #blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416), swapRB=True, crop=False)
+    #USing blob function of opencv to preprocess image
+    blob = cv2.dnn.blobFromImage(img, 1 / 255.0, (416, 416), swapRB=True, crop=False)
     #Detecting objects
-    #net.setInput(blob)
-    #outs = net.forward(output_layers)
+    net.setInput(blob)
+    outs = net.forward(output_layers)
 
-    # Showing informations on the screen
-    #class_ids = []
-    #confidences = []
-    #boxes = []
-    #for out in outs:
-        #for detection in out:
-           # scores = detection[5:]
-            #class_id = np.argmax(scores)
-            #confidence = scores[class_id]
-            #if confidence > 0.7:
-                # Object detected
-              #  w = int(detection[2] * width)
-               # h = int(detection[3] * height)
+    #Showing informations on the screen
+    class_ids = []
+    confidences = []
+    boxes = []
+    for out in outs:
+        for detection in out:
+            scores = detection[5:]
+            class_id = np.argmax(scores)
+            confidence = scores[class_id]
+            if confidence > 0.7:
+                #Object detected
+                w = int(detection[2] * width)
+                h = int(detection[3] * height)
 
-                # Rectangle coordinates
-               # x = int(detection[0] * width - w / 2)
-               # y = int(detection[1] * height - h / 2)
+                #Rectangle coordinates
+                x = int(detection[0] * width - w / 2)
+                y = int(detection[1] * height - h / 2)
 
-               # boxes.append([x, y, w, h])
-               # confidences.append(float(confidence))
-               # class_ids.append(class_id)
+                boxes.append([x, y, w, h])
+                confidences.append(float(confidence))
+                class_ids.append(class_id)
     
     #We use NMS function in opencv to perform Non-maximum Suppression
     #we give it score threshold and nms threshold as arguments.
-    #indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-   # font = cv2.FONT_HERSHEY_TRIPLEX
-   # for i in range(len(boxes)):
-       # if i in indexes:
-         #   x, y, w, h = boxes[i]
-        #    color = colors[class_ids[i]]
-         #   cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
-         #   cv2.putText(img, str(classes[class_ids[i]]), (x, y + 30), font, 2, color, 3)
+    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
+    font = cv2.FONT_HERSHEY_TRIPLEX
+    for i in range(len(boxes)):
+        if i in indexes:
+           x, y, w, h = boxes[i]
+           color = colors[class_ids[i]]
+           cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+           cv2.putText(img, str(classes[class_ids[i]]), (x, y + 30), font, 2, color, 3)
 
-    #writer.write(img)
+    writer.write(img)
 
-    #cv2.imshow("Image", img)
-    #if cv2.waitKey(1) & 0xFF == ord('q'):
-        #break
-    #fps.update()
-#fps.stop()
+    cv2.imshow("Image", img)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+    fps.update()
+fps.stop()
 
+video_capture.release()
+writer.release()
 
-#video_capture.release()
-#writer.release()
+#enable_docking(shift_only = False)
+#set_main_window_size(1920, 1080)
+#set_main_window_title("SportView")
 
-enable_docking(shift_only = False)
-set_main_window_size(1920, 1080)
-set_main_window_title("SportView")
+#add_additional_font("./resources/fonts/Poppins/Poppins-Medium.ttf", size = 15.0)
 
-add_additional_font("./resources/fonts/Poppins/Poppins-Medium.ttf", size = 15.0)
+#load_def_style()
 
-load_def_style()
+#with window("Docking canvas", width = 1920, height = 1080, no_move = True, no_resize = True, no_background = True, no_title_bar=True, x_pos = 0, y_pos = 0, no_bring_to_front_on_focus = True):
+    #set_primary_window("Docking canvas", True)
 
-with window("Docking canvas", width = 1920, height = 1080, no_move = True, no_resize = True, no_background = True, no_title_bar=True, x_pos = 0, y_pos = 0, no_bring_to_front_on_focus = True):
-    set_primary_window("Docking canvas", True)
+#with window("File"):
+    #add_button("Select a file", callback = BtnFileSelectClick)
+    #add_button("Download", callback = BtnFileSelectClick)
 
-with window("File"):
-    add_button("Select a file", callback = BtnFileSelectClick)
-    add_button("Download", callback = BtnFileSelectClick)
-
-start_dearpygui()
-stop_dearpygui()
+#start_dearpygui()
+#stop_dearpygui()
