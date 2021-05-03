@@ -77,10 +77,6 @@ def LoadImage(sender, data):
 
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
-            
-
-
-
 
                 cv2.imwrite("./src/cache/{0}_{1}_cache.jpg".format(index, data[1]), img) #salvo il frame nella cache
                 img = cv2.resize(img, None, fx=1.0, fy=1.0) #non usato (ridimensiona l`immagine)
@@ -161,7 +157,7 @@ while True:
     boxes = []
     for out in outs:
         for detection in out:
-           scores = detection[5:]
+            scores = detection[5:]
             class_id = np.argmax(scores)
             confidence = scores[class_id]
             if confidence > 0.7:
@@ -180,13 +176,13 @@ while True:
     #We use NMS function in opencv to perform Non-maximum Suppression
     #we give it score threshold and nms threshold as arguments.
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.4)
-   font = cv2.FONT_HERSHEY_TRIPLEX
-   for i in range(len(boxes)):
-       if i in indexes:
-           x, y, w, h = boxes[i]
-           color = colors[class_ids[i]]
-           cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
-           cv2.putText(img, str(classes[class_ids[i]]), (x, y + 30), font, 2, color, 3)
+    font = cv2.FONT_HERSHEY_TRIPLEX
+    for i in range(len(boxes)):
+        if i in indexes:
+            x, y, w, h = boxes[i]
+            color = colors[class_ids[i]]
+            cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+            cv2.putText(img, str(classes[class_ids[i]]), (x, y + 30), font, 2, color, 3)
 
     writer.write(img)
 
