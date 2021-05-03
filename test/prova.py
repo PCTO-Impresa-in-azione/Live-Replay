@@ -47,7 +47,7 @@ def LoadImage(sender, data):
                 m_campo=cv2.inRange(hsv, l_campo, u_campo)
                 #colore squadra 1
                 l_squadra1 = np.array([110,50,50])
-	            u_squadra1 = np.array([130,255,255])
+                u_squadra1 = np.array([130,255,255])
                 m_squadra1=cv2.inRange(hsv, l_squdra1, u_squadra1)
                 #colore squadra 2
                 l_squadra2=np.array([0,31,255])
@@ -55,23 +55,23 @@ def LoadImage(sender, data):
                 m_squadra2=cv2.inRange(hsv, l_squadra2, u_squadra2)
                 #bianco
                 l_bianco = np.array([0,0,0])
-	            u_bianco = np.array([0,0,255])
+                u_bianco = np.array([0,0,255])
                 m_bianco=cv2.inRange(hsv, l_bianco, u_bianco)
 
                 res = cv2.bitwise_and(img, img, mask=mask)
 	            #convert to hsv to gray
-	            res_bgr = cv2.cvtColor(res,cv2.COLOR_HSV2BGR)
-	            res_gray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
+                res_bgr = cv2.cvtColor(res,cv2.COLOR_HSV2BGR)
+                res_gray = cv2.cvtColor(res,cv2.COLOR_BGR2GRAY)
 
                 #Defining a kernel to do morphological operation in threshold image to 
                 #get better output.
-	            kernel = np.ones((13,13),np.uint8)
-	            thresh = cv2.threshold(res_gray,127,255,cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
-	            thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+                kernel = np.ones((13,13),np.uint8)
+                thresh = cv2.threshold(res_gray,127,255,cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+                thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
 	
 
                 #find contours in threshold image     
-	            contours,hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+                contours,hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
                 
                 
                 # Showing informations on the screen
@@ -109,10 +109,10 @@ def LoadImage(sender, data):
 
 
                 for c in contours:
-		x,y,w,h = cv2.boundingRect(c)
+                    x,y,w,h = cv2.boundingRect(c)
 		
 		#Detect players
-		if(h>=(1.5)*w):
+        if(h>=(1.5)*w):
 			if(w>15 and h>= 15):
 				idx = idx+1
 				player_img = img[y:y+h,x:x+w]
